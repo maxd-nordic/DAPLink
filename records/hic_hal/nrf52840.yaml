@@ -4,9 +4,9 @@ common:
     core:
         - Cortex-M4
     macros:
-        - INTERFACE_NRF52820
-        - NRF52820_XXAA
-        - DAPLINK_HIC_ID=0x6E052820  # DAPLINK_HIC_ID_NRF52820
+        - INTERFACE_NRF52840
+        - NRF52840_XXAA
+        - DAPLINK_HIC_ID=0x6E052840  # DAPLINK_HIC_ID_NRF52840
         - OS_CLOCK=64000000
         - __DAPLINK
     includes:
@@ -30,19 +30,19 @@ tool_specific:
                 - --predefine="-I..\..\..\source\hic_hal\nordic\nrf52820"
         sources:
             hic_hal:
-                - source/hic_hal/nordic/nrf52820/armcc/arm_startup_nrf52820.s
+                - source/hic_hal/nordic/nrf52820/armcc/arm_startup_nrf52840.s
     armcc:
         sources:
             hic_hal:
-                - source/hic_hal/nordic/nrf52820/armcc/arm_startup_nrf52820.s
+                - source/hic_hal/nordic/nrf52820/armcc/arm_startup_nrf52840.s
     armclang:
         misc:
             common_flags:
                 - -mfpu=none
         sources:
             hic_hal:
-                - source/hic_hal/nordic/nrf52820/armcc/arm_startup_nrf52820.s
+                - source/hic_hal/nordic/nrf52820/armcc/arm_startup_nrf52840.s
     gcc_arm:
         sources:
             hic_hal:
-                - source/hic_hal/nordic/nrf52820/gcc/gcc_startup_nrf52820.S
+                - source/hic_hal/nordic/nrf52820/gcc/gcc_startup_nrf52840.S

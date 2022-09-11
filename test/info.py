@@ -106,6 +106,7 @@ PROJECT_RELEASE_INFO = [
     ('max32620_if',                                 False,      0x0000,     "bin"       ),
     ('max32625_if',                                 False,      0x0000,     "bin"       ),
     ('nrf52820_if',                                 False,      0x0000,     "bin"       ),
+    ('nrf52840_if',                                 False,      0x0000,     "bin"       ),
     ('sam3u2c_if',                                  False,      0x0000,     "bin"       ),
     ('stm32f103xb_if',                              False,      0x0000,     "bin"       ),
     ('lpc11u35_pitaya_link_if',                     False,      0x0000,     "bin"       ),
@@ -114,6 +115,7 @@ PROJECT_RELEASE_INFO = [
 TEST_RELEASE_INFO = [
     ('lpc55s69_nrf52840dk_test_if',                 False,      0x10000,    "bin"       ),
     ('stm32f103xb_stm32f207zg_if',                  False,      0x0000,     "bin"       ),
+    ('nrf52840_dongle_if',                          False,      0x0000,     "bin"       ),
 ]
 
 
