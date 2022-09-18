@@ -17,56 +17,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 NOTICE: This file has been modified by Nordic Semiconductor ASA.
+NOTICE: This file has been modified for DAPLink
 
 */
 
     .syntax unified
     .arch armv7e-m
-
-#ifdef __STARTUP_CONFIG
-#include "startup_config.h"
-#ifndef __STARTUP_CONFIG_STACK_ALIGNEMENT
-#define __STARTUP_CONFIG_STACK_ALIGNEMENT 3
-#endif
-#endif
-
-    .section .stack
-#if defined(__STARTUP_CONFIG)
-    .align __STARTUP_CONFIG_STACK_ALIGNEMENT
-    .equ    Stack_Size, __STARTUP_CONFIG_STACK_SIZE
-#elif defined(__STACK_SIZE)
-    .align 3
-    .equ    Stack_Size, __STACK_SIZE
-#else
-    .align 3
-    .equ    Stack_Size, 16384
-#endif
-    .globl __StackTop
-    .globl __StackLimit
-__StackLimit:
-    .space Stack_Size
-    .size __StackLimit, . - __StackLimit
-__StackTop:
-    .size __StackTop, . - __StackTop
-
-    .section .heap
-    .align 3
-#if defined(__STARTUP_CONFIG)
-    .equ Heap_Size, __STARTUP_CONFIG_HEAP_SIZE
-#elif defined(__HEAP_SIZE)
-    .equ Heap_Size, __HEAP_SIZE
-#else
-    .equ Heap_Size, 16384
-#endif
-    .globl __HeapBase
-    .globl __HeapLimit
-__HeapBase:
-    .if Heap_Size
-    .space Heap_Size
-    .endif
-    .size __HeapBase, . - __HeapBase
-__HeapLimit:
-    .size __HeapLimit, . - __HeapLimit
 
     .section .isr_vector, "ax"
     .align 2
@@ -80,12 +36,12 @@ __isr_vector:
     .long   BusFault_Handler
     .long   UsageFault_Handler
     .long   0                           /*Reserved */
-    .long   0                           /*Reserved */
-    .long   0                           /*Reserved */
-    .long   0                           /*Reserved */
+    .long   DAPLINK_BUILD_KEY           /* DAPLINK: Build type (BL/IF) */
+    .long   DAPLINK_HIC_ID              /* DAPLINK: Compatibility */
+    .long   DAPLINK_VERSION             /* DAPLINK: Version */
     .long   SVC_Handler
     .long   DebugMon_Handler
-    .long   0                           /*Reserved */
+    .long   g_board_info                /* DAPLINK: Pointer to board/family/target info */
     .long   PendSV_Handler
     .long   SysTick_Handler
 
@@ -221,15 +177,14 @@ Reset_Handler:
  * The ranges of copy from/to are specified by following symbols:
  *      __etext: LMA of start of the section to copy from. Usually end of text
  *      __data_start__: VMA of start of the section to copy to.
- *      __bss_start__: VMA of end of the section to copy to. Normally __data_end__ is used, but by using __bss_start__
- *                    the user can add their own initialized data section before BSS section with the INSERT AFTER command.
+ *      __data_end__: VMA of end of the section to copy to.
  *
  * All addresses must be aligned to 4 bytes boundary.
  */
 #ifndef __STARTUP_SKIP_ETEXT
     ldr r1, =__etext
     ldr r2, =__data_start__
-    ldr r3, =__bss_start__
+    ldr r3, =__data_end__
 
     subs r3, r3, r2
     ble .L_loop1_done

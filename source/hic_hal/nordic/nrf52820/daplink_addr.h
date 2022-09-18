@@ -19,8 +19,40 @@
 #ifndef DAPLINK_ADDR_H
 #define DAPLINK_ADDR_H
 
+#if    defined (NRF52840_XXAA) || defined (DEVELOP_IN_NRF52840)
 /* Device sizes */
 
+#define DAPLINK_ROM_START               0x00000000
+#define DAPLINK_ROM_SIZE                0x00100000 // 1 MiB
+
+
+#define DAPLINK_RAM_START               0x20000000
+#define DAPLINK_RAM_SIZE                0x00040000 // 256 KiB
+
+/* ROM sizes */
+
+#define DAPLINK_ROM_BL_START            0x00000000
+#define DAPLINK_ROM_BL_SIZE             0x00010000 // 32 KiB bootloader
+
+#define DAPLINK_ROM_IF_START            0x00010000
+#define DAPLINK_ROM_IF_SIZE             0x0005d000
+
+#define DAPLINK_ROM_CONFIG_USER_START   0x0006d000
+#define DAPLINK_ROM_CONFIG_USER_SIZE    0x00001000
+
+/* RAM sizes */
+
+#define DAPLINK_RAM_APP_START           0x20000000
+#define DAPLINK_RAM_APP_SIZE            0x0003FF00
+
+#define DAPLINK_RAM_SHARED_START        0x2003FF00
+#define DAPLINK_RAM_SHARED_SIZE         0x00000100
+
+/* Flash Programming Info */
+
+#define DAPLINK_SECTOR_SIZE             0x00001000
+#define DAPLINK_MIN_WRITE_SIZE          0x00000100
+#else
 #define DAPLINK_ROM_START               0x00000000
 #define DAPLINK_ROM_SIZE                0x00020000 // Limit to 128 KiB
 
@@ -51,6 +83,7 @@
 
 #define DAPLINK_SECTOR_SIZE             0x00001000
 #define DAPLINK_MIN_WRITE_SIZE          0x00000100
+#endif
 
 /* Current build */
 
