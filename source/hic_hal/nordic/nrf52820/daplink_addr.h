@@ -35,9 +35,9 @@
 #define DAPLINK_ROM_BL_SIZE             0x00010000 // 32 KiB bootloader
 
 #define DAPLINK_ROM_IF_START            0x00010000
-#define DAPLINK_ROM_IF_SIZE             0x0005d000
+#define DAPLINK_ROM_IF_SIZE             0x000EF000
 
-#define DAPLINK_ROM_CONFIG_USER_START   0x0006d000
+#define DAPLINK_ROM_CONFIG_USER_START   0x000FF000
 #define DAPLINK_ROM_CONFIG_USER_SIZE    0x00001000
 
 /* RAM sizes */
@@ -47,11 +47,6 @@
 
 #define DAPLINK_RAM_SHARED_START        0x2003FF00
 #define DAPLINK_RAM_SHARED_SIZE         0x00000100
-
-/* Flash Programming Info */
-
-#define DAPLINK_SECTOR_SIZE             0x00001000
-#define DAPLINK_MIN_WRITE_SIZE          0x00000100
 #else
 #define DAPLINK_ROM_START               0x00000000
 #define DAPLINK_ROM_SIZE                0x00020000 // Limit to 128 KiB
@@ -79,11 +74,12 @@
 #define DAPLINK_RAM_SHARED_START        0x20007F00
 #define DAPLINK_RAM_SHARED_SIZE         0x00000100
 
+#endif
+
 /* Flash Programming Info */
 
 #define DAPLINK_SECTOR_SIZE             0x00001000
 #define DAPLINK_MIN_WRITE_SIZE          0x00000100
-#endif
 
 /* Current build */
 
