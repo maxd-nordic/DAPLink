@@ -1,0 +1,9 @@
+common:
+    sources:
+        board:
+            - source/board/nrf5340_thingy91.c
+        family:
+            - source/family/nordic/nrf51822/target_nrf51.c
+            - source/family/nordic/target_reset_nrf51.c
+            - source/family/nordic/nrf52/target.c
+            - source/family/nordic/target_reset_nrf52.c
