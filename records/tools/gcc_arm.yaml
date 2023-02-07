@@ -11,8 +11,8 @@ tool_specific:
                 - c
                 - nosys
             common_flags:
-                - -Os
-                - -g3
+                - -Og
+                - -ggdb
                 # - -Wall
                 - -Werror
                 - -ffunction-sections
