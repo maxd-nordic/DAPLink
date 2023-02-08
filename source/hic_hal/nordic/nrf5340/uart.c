@@ -107,12 +107,16 @@ extern int32_t uart_set_configuration(UART_Configuration *config)
 	switch (config->Parity) {
 		case UART_PARITY_EVEN:
 		conf.hal_cfg.parity = NRF_UARTE_PARITY_INCLUDED;
+#if defined(UART_CONFIG_PARITYTYPE_Msk)
 		conf.hal_cfg.paritytype = NRF_UARTE_PARITYTYPE_EVEN;
+#endif
 		break;
 
 		case UART_PARITY_ODD:
 		conf.hal_cfg.parity =  NRF_UARTE_PARITY_INCLUDED;
+#if defined(UART_CONFIG_PARITYTYPE_Msk)
 		conf.hal_cfg.paritytype = NRF_UARTE_PARITYTYPE_ODD;
+#endif
 		break;
 
 		case UART_PARITY_NONE: /* fallthrough */

@@ -11,6 +11,7 @@ void sdk_init()
 {
 
 	/* Enable instruction trace */
+	/*
 	NRF_TAD_S->ENABLE = TAD_ENABLE_ENABLE_Msk;
 	NRF_TAD_S->CLOCKSTART = TAD_CLOCKSTART_START_Msk;
 	NRF_TAD_S->PSEL.TRACECLK   = TAD_PSEL_TRACECLK_PIN_Traceclk;
@@ -23,8 +24,8 @@ void sdk_init()
 	NRF_P0_S->PIN_CNF[TAD_PSEL_TRACECLK_PIN_Traceclk]
 			|= (GPIO_PIN_CNF_MCUSEL_TND << GPIO_PIN_CNF_MCUSEL_Pos)
 			| (GPIO_PIN_CNF_DRIVE_E0E1 << GPIO_PIN_CNF_DRIVE_Pos);
-	NRF_TAD_S->TRACEPORTSPEED = TAD_TRACEPORTSPEED_TRACEPORTSPEED_64MHz;
-
+	NRF_TAD_S->TRACEPORTSPEED = TAD_TRACEPORTSPEED_TRACEPORTSPEED_32MHz;
+	*/
 	if (!nrfx_clock_hfclk_is_running()) {
 		nrfx_clock_hfclk_start();
 	}

@@ -1,7 +1,7 @@
 project_generator==0.11.*
 mbed-ls==1.8.*
 pyserial
-pyOCD==0.34.*
+pyOCD==0.32.*
 requests
 intelhex
 enum34

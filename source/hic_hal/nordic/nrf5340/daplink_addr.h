@@ -22,21 +22,21 @@
 /* Device sizes */
 
 #define DAPLINK_ROM_START               0x00000000 
-#define DAPLINK_ROM_SIZE                0x00040400 // up to 1MB
+#define DAPLINK_ROM_SIZE                0x00020000 // Limit to 128 KiB
 
 #define DAPLINK_RAM_START               0x20000000 
-#define DAPLINK_RAM_SIZE                0x00040000 // up to 512kB
+#define DAPLINK_RAM_SIZE                0x00008000 // 32 KiB
 
 /* ROM sizes */
 
 #define DAPLINK_ROM_BL_START            0x00000000
-#define DAPLINK_ROM_BL_SIZE             0x00010000 // 64 kB bootloader
+#define DAPLINK_ROM_BL_SIZE             0x00008000 // 32 KiB bootloader
 
 #define DAPLINK_ROM_IF_START            (DAPLINK_ROM_BL_START + DAPLINK_ROM_BL_SIZE)
-#define DAPLINK_ROM_IF_SIZE             (DAPLINK_ROM_SIZE - DAPLINK_ROM_BL_SIZE - DAPLINK_ROM_CONFIG_USER_SIZE) // 191 kB interface
+#define DAPLINK_ROM_IF_SIZE             (DAPLINK_ROM_SIZE - DAPLINK_ROM_BL_SIZE - DAPLINK_ROM_CONFIG_USER_SIZE)
 
 #define DAPLINK_ROM_CONFIG_USER_START   (DAPLINK_ROM_IF_START + DAPLINK_ROM_IF_SIZE)
-#define DAPLINK_ROM_CONFIG_USER_SIZE    0x00000400 // 1 kB config
+#define DAPLINK_ROM_CONFIG_USER_SIZE    0x00001000
 
 /* RAM sizes */
 

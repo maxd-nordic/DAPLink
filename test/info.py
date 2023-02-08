@@ -247,6 +247,7 @@ SUPPORTED_CONFIGURATIONS = [
     (   0x0000,     VENDOR_TO_FAMILY('Stub', 1),        'max32620_if',                              None,               None                                    ),
     (   0x0000,     VENDOR_TO_FAMILY('Stub', 1),        'max32625_if',                              None,               None                                    ),
     (   0x0000,     VENDOR_TO_FAMILY('Stub', 1),        'nrf52820_if',                              None,               None                                    ),
+    (   0x0000,     VENDOR_TO_FAMILY('Stub', 1),        'nrf5340_if',                               None,               None                                    ),
     (   0x0000,     VENDOR_TO_FAMILY('Stub', 1),        'sam3u2c_if',                               None,               None                                    ),
     (   0x0000,     VENDOR_TO_FAMILY('Stub', 1),        'stm32f103xb_if',                           None,               None                                    ),
 
@@ -267,6 +268,7 @@ HIC_STRING_TO_ID = {
     'max32620': 0x97969904,
     'max32625': 0x97969906,
     'nrf52820': 0x6E052820,
+    'nrf5340': 0x6E005340,
     'sam3u2c': 0x97969903,
     'stm32f103xb': 0x97969908,
 }
