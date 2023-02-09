@@ -29,4 +29,7 @@ void sdk_init()
 	if (!nrfx_clock_hfclk_is_running()) {
 		nrfx_clock_hfclk_start();
 	}
+	if (!nrfx_clock_lfclk_is_running()) {
+		nrfx_clock_lfclk_start();
+	}
 }
