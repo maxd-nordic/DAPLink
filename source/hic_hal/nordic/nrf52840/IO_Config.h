@@ -79,8 +79,8 @@ COMPILER_ASSERT(DAPLINK_HIC_ID == DAPLINK_HIC_ID_NRF52840);
 
 #else
 
-// Default PIN assignment (not finalized based on nRF52833)
-#define GPIO_LED_ACTIVE_STATE 1
+// Default PIN assignment tested on nRF52840 DK
+#define GPIO_LED_ACTIVE_STATE 0
 #define RESET_BUTTON_PULL NRF_GPIO_PIN_PULLUP
 
 #define PIN_SWCLK         NRF_GPIO_PIN_MAP(0, 1)  // SWDCLK (Output)
@@ -88,15 +88,15 @@ COMPILER_ASSERT(DAPLINK_HIC_ID == DAPLINK_HIC_ID_NRF52840);
 #undef PIN_nRESET                                 // nRESET Pin
 #undef LED_RUNNING                                // Target Running LED (Output)
 #undef LED_CONNECTED                              // Connected LED (Output)
-#define LED_HID           NRF_GPIO_PIN_MAP(0, 15) // HID LED
-#define LED_MSC           NRF_GPIO_PIN_MAP(0, 15) // MSC LED
-#define LED_CDC           NRF_GPIO_PIN_MAP(0, 15) // CDC LED
-#define LED_PWR           NRF_GPIO_PIN_MAP(0, 17) // POWER LED
-#define RESET_BUTTON      NRF_GPIO_PIN_MAP(1, 9)  // Reset button (SW_RESET)
-#define UART_TX_PIN       NRF_GPIO_PIN_MAP(0, 2)  // UART From IMCU to target
-#define UART_RX_PIN       NRF_GPIO_PIN_MAP(0, 3)  // UART From target to IMCU
-#define I2C_SCL_PIN       NRF_GPIO_PIN_MAP(0, 29) // I2C SCL
-#define I2C_SDA_PIN       NRF_GPIO_PIN_MAP(0, 28) // I2C SDA
+#define LED_HID           NRF_GPIO_PIN_MAP(0, 13) // LED1
+#define LED_MSC           NRF_GPIO_PIN_MAP(0, 14) // LED2
+#define LED_CDC           NRF_GPIO_PIN_MAP(0, 15) // LED3
+#define LED_PWR           NRF_GPIO_PIN_MAP(0, 16) // LED4
+#define RESET_BUTTON      NRF_GPIO_PIN_MAP(0, 11) // SW1
+#define UART_TX_PIN       NRF_GPIO_PIN_MAP(0, 5)  // UART From IMCU to target
+#define UART_RX_PIN       NRF_GPIO_PIN_MAP(0, 6)  // UART From target to IMCU
+#define I2C_SCL_PIN       NRF_GPIO_PIN_MAP(0, 7) // I2C SCL
+#define I2C_SDA_PIN       NRF_GPIO_PIN_MAP(0, 8) // I2C SDA
 
 #endif
 
