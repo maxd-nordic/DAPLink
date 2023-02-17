@@ -26,6 +26,7 @@
 #include "cortex_m.h"
 #include "circ_buf.h"
 #include "settings.h" // for config_get_overflow_detect
+#include "nrfx.h"
 
 #define USART_INSTANCE (Driver_USART0)
 #define USART_IRQ      (UARTE0_UART0_IRQn)

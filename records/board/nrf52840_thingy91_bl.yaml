@@ -1,0 +1,7 @@
+common:
+    macros:
+        - USB_PROD_STR="Thingy:91 CMSIS-DAP"
+        - THINGY91
+    sources:
+        board:
+            - source/board/nrf52840_bl.c

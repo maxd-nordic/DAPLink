@@ -3,17 +3,15 @@
 // The file flash_blob.c must only be included in target.c
 #include "flash_blob.c"
 
-target_cfg_t target_device_nrf9160 = {
+target_cfg_t target_device_nrf5340 = {
     .version                        = kTargetConfigVersion,
     .sectors_info                   = sectors_info_nrf53,
     .sector_info_length             = (sizeof(sectors_info_nrf53))/(sizeof(sector_info_t)),
     .flash_regions[0].start         = flash_start_nrf53xx_application,
     .flash_regions[0].end           = flash_size_nrf53xx_application,
-    .flash_regions[0].flags         = kRegionIsSecure,
     .flash_regions[0].flash_algo    = (program_target_t *) &flash_nrf53xx_application,
     .flash_regions[1].start         = flash_start_nrf53xx_network,
     .flash_regions[1].end           = flash_size_nrf53xx_network,
-    .flash_regions[1].flags         = kRegionIsSecure,
     .flash_regions[1].flash_algo    = (program_target_t *) &flash_nrf53xx_network,
     .flash_regions[2].start         = flash_start_nrf53xx_application_uicr,
     .flash_regions[2].end           = flash_size_nrf53xx_application_uicr,

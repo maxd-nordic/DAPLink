@@ -98,3 +98,4 @@ mbed-os/
 
 #vscode editor
 .vscode
+firmware_*/

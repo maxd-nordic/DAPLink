@@ -43,6 +43,7 @@
 
 
 #include "USART_nRF52820.h"
+#include <hal/nrf_uarte.h>
 
 #define ARM_USART_DRV_VERSION    ARM_DRIVER_VERSION_MAJOR_MINOR(1, 0)  /* driver version */
 
@@ -218,6 +219,41 @@ static int32_t USART_Uninitialize (void) {
   return ARM_DRIVER_OK;
 }
 
+static void apply_workaround_for_enable_anomaly(NRF_UARTE_Type * p_reg)
+{
+#if defined(NRF5340_XXAA_APPLICATION) || defined(NRF5340_XXAA_NETWORK) || defined(NRF9160_XXAA)
+    // Apply workaround for anomalies:
+    // - nRF9160 - anomaly 23
+    // - nRF5340 - anomaly 44
+    volatile uint32_t const * rxenable_reg =
+        (volatile uint32_t *)(((uint32_t)p_reg) + 0x564);
+    volatile uint32_t const * txenable_reg =
+        (volatile uint32_t *)(((uint32_t)p_reg) + 0x568);
+
+    if (*txenable_reg == 1)
+    {
+        nrf_uarte_task_trigger(p_reg, NRF_UARTE_TASK_STOPTX);
+    }
+
+    if (*rxenable_reg == 1)
+    {
+        nrf_uarte_enable(p_reg);
+        nrf_uarte_task_trigger(p_reg, NRF_UARTE_TASK_STOPRX);
+
+        bool workaround_succeded;
+        // The UARTE is able to receive up to four bytes after the STOPRX task has been triggered.
+        // On lowest supported baud rate (1200 baud), with parity bit and two stop bits configured
+        // (resulting in 12 bits per data byte sent), this may take up to 40 ms.
+        NRFX_WAIT_FOR(*rxenable_reg == 0, 40000, 1, workaround_succeded);
+
+        (void)nrf_uarte_errorsrc_get_and_clear(p_reg);
+        nrf_uarte_disable(p_reg);
+    }
+#else
+    (void)(p_reg);
+#endif // defined(NRF5340_XXAA_APPLICATION) || defined(NRF5340_XXAA_NETWORK) || defined(NRF9160_XXAA)
+}
+
 /**
   \fn          int32_t USART_PowerControl (ARM_POWER_STATE state)
   \brief       Control USART Interface Power.
@@ -245,8 +281,10 @@ static int32_t USART_PowerControl (ARM_POWER_STATE state) {
         (void)USART_Control(ARM_USART_ABORT_RECEIVE, 0U);
       }
 
+      apply_workaround_for_enable_anomaly(NRF_UARTE0);
+
       /* Disable USARTE peripheral */
-      NRF_UARTE0->ENABLE = UARTE_ENABLE_ENABLE_Disabled;
+      nrf_uarte_disable(NRF_UARTE0);
 
       NVIC_DisableIRQ(UARTE0_UART0_IRQn);
 
@@ -281,7 +319,7 @@ static int32_t USART_PowerControl (ARM_POWER_STATE state) {
       memset(tx_buf, 0, sizeof(tx_buf));
 
       /* Enable USARTE peripheral */
-      NRF_UARTE0->ENABLE = UARTE_ENABLE_ENABLE_Enabled;
+      nrf_uarte_enable(NRF_UARTE0);
 
       driver_state |= USART_FLAG_POWERED;
 
@@ -323,6 +361,8 @@ static int32_t USART_Send (const void *data, uint32_t num) {
   /* Copy data to intermediate Tx buffer (up to intermediate Tx buffer size) */
   memcpy(tx_buf, data, num_local);
 
+  nrf_uarte_event_clear(NRF_UARTE0, NRF_UARTE_EVENT_ENDTX);
+  nrf_uarte_event_clear(NRF_UARTE0, NRF_UARTE_EVENT_TXSTOPPED);
   /* Start transmission from intermediate Tx buffer */
   usart_dma_start(TX_DIR, tx_buf, num_local);
 
@@ -343,7 +383,8 @@ static int32_t USART_Receive (void *data, uint32_t num) {
   }
 
   usart_status.rx_busy = 1U;
-
+  nrf_uarte_event_clear(NRF_UARTE0, NRF_UARTE_EVENT_ENDRX);
+  nrf_uarte_event_clear(NRF_UARTE0, NRF_UARTE_EVENT_RXTO);
   /* Start reception */
   usart_dma_start(RX_DIR, data, num);
 
@@ -510,58 +551,58 @@ static int32_t USART_Control (uint32_t control, uint32_t arg) {
       /* Configure baudrate */
       switch (arg) {
         case 1200:
-          NRF_UARTE0->BAUDRATE = UARTE_BAUDRATE_BAUDRATE_Baud1200;
+          nrf_uarte_baudrate_set(NRF_UARTE0, NRF_UARTE_BAUDRATE_1200);
           break;
         case 2400:
-          NRF_UARTE0->BAUDRATE = UARTE_BAUDRATE_BAUDRATE_Baud2400;
+          nrf_uarte_baudrate_set(NRF_UARTE0, NRF_UARTE_BAUDRATE_2400);
           break;
         case 4800:
-          NRF_UARTE0->BAUDRATE = UARTE_BAUDRATE_BAUDRATE_Baud4800;
+          nrf_uarte_baudrate_set(NRF_UARTE0, NRF_UARTE_BAUDRATE_4800);
           break;
         case 9600:
-          NRF_UARTE0->BAUDRATE = UARTE_BAUDRATE_BAUDRATE_Baud9600;
+          nrf_uarte_baudrate_set(NRF_UARTE0, NRF_UARTE_BAUDRATE_9600);
           break;
         case 14400:
-          NRF_UARTE0->BAUDRATE = UARTE_BAUDRATE_BAUDRATE_Baud14400;
+          nrf_uarte_baudrate_set(NRF_UARTE0, NRF_UARTE_BAUDRATE_14400);
           break;
         case 19200:
-          NRF_UARTE0->BAUDRATE = UARTE_BAUDRATE_BAUDRATE_Baud19200;
+          nrf_uarte_baudrate_set(NRF_UARTE0, NRF_UARTE_BAUDRATE_19200);
           break;
         case 28800:
-          NRF_UARTE0->BAUDRATE = UARTE_BAUDRATE_BAUDRATE_Baud28800;
+          nrf_uarte_baudrate_set(NRF_UARTE0, NRF_UARTE_BAUDRATE_28800);
           break;
         case 31250:
-          NRF_UARTE0->BAUDRATE = UARTE_BAUDRATE_BAUDRATE_Baud31250;
+          nrf_uarte_baudrate_set(NRF_UARTE0, NRF_UARTE_BAUDRATE_31250);
           break;
         case 38400:
-          NRF_UARTE0->BAUDRATE = UARTE_BAUDRATE_BAUDRATE_Baud38400;
+          nrf_uarte_baudrate_set(NRF_UARTE0, NRF_UARTE_BAUDRATE_38400);
           break;
         case 56000:
-          NRF_UARTE0->BAUDRATE = UARTE_BAUDRATE_BAUDRATE_Baud56000;
+          nrf_uarte_baudrate_set(NRF_UARTE0, NRF_UARTE_BAUDRATE_56000);
           break;
         case 57600:
-          NRF_UARTE0->BAUDRATE = UARTE_BAUDRATE_BAUDRATE_Baud57600;
+          nrf_uarte_baudrate_set(NRF_UARTE0, NRF_UARTE_BAUDRATE_57600);
           break;
         case 76800:
-          NRF_UARTE0->BAUDRATE = UARTE_BAUDRATE_BAUDRATE_Baud76800;
+          nrf_uarte_baudrate_set(NRF_UARTE0, NRF_UARTE_BAUDRATE_76800);
           break;
         case 115200:
-          NRF_UARTE0->BAUDRATE = UARTE_BAUDRATE_BAUDRATE_Baud115200;
+          nrf_uarte_baudrate_set(NRF_UARTE0, NRF_UARTE_BAUDRATE_115200);
           break;
         case 230400:
-          NRF_UARTE0->BAUDRATE = UARTE_BAUDRATE_BAUDRATE_Baud230400;
+          nrf_uarte_baudrate_set(NRF_UARTE0, NRF_UARTE_BAUDRATE_230400);
           break;
         case 250000:
-          NRF_UARTE0->BAUDRATE = UARTE_BAUDRATE_BAUDRATE_Baud250000;
+          nrf_uarte_baudrate_set(NRF_UARTE0, NRF_UARTE_BAUDRATE_250000);
           break;
         case 460800:
-          NRF_UARTE0->BAUDRATE = UARTE_BAUDRATE_BAUDRATE_Baud460800;
+          nrf_uarte_baudrate_set(NRF_UARTE0, NRF_UARTE_BAUDRATE_460800);
           break;
         case 921600:
-          NRF_UARTE0->BAUDRATE = UARTE_BAUDRATE_BAUDRATE_Baud921600;
+          nrf_uarte_baudrate_set(NRF_UARTE0, NRF_UARTE_BAUDRATE_921600);
           break;
         case 1000000:
-          NRF_UARTE0->BAUDRATE = UARTE_BAUDRATE_BAUDRATE_Baud1M;
+          nrf_uarte_baudrate_set(NRF_UARTE0, NRF_UARTE_BAUDRATE_1000000);
           break;
         default:
           return ARM_USART_ERROR_BAUDRATE;

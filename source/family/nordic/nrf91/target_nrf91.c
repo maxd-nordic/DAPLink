@@ -9,7 +9,6 @@ target_cfg_t target_device_nrf9160 = {
     .sector_info_length             = (sizeof(sectors_info_nrf91))/(sizeof(sector_info_t)),
     .flash_regions[0].start         = flash_start_nrf91,
     .flash_regions[0].end           = flash_size_nrf91,
-    .flash_regions[0].flags         = kRegionIsSecure,
     .flash_regions[0].flash_algo    = (program_target_t *) &flash_nrf91,
     .flash_regions[1].start         = flash_start_nrf91_uicr,
     .flash_regions[1].end           = flash_size_nrf91_uicr,
