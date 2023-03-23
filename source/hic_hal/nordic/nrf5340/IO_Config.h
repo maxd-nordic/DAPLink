@@ -19,6 +19,8 @@
  * limitations under the License.
  */
 
+#include "dl_nrf_gpio.h"
+
 // Override all defines if IO_CONFIG_OVERRIDE is defined
 #ifdef IO_CONFIG_OVERRIDE
 #include "IO_Config_Override.h"

@@ -16,6 +16,7 @@ common:
         - source/hic_hal/nordic/nrfx/hal
         - source/hic_hal/nordic/nrfx/mdk
         - source/hic_hal/nordic/shared/nrf52
+        - source/hic_hal/nordic/shared
     sources:
         hic_hal:
             - source/hic_hal/nordic/nrf52840

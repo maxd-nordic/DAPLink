@@ -17,9 +17,15 @@ common:
         - source/hic_hal/nordic/nrfx/drivers/include
         - source/hic_hal/nordic/nrfx/hal
         - source/hic_hal/nordic/nrfx/mdk
+        - source/hic_hal/nordic/shared
     sources:
         hic_hal:
-            - source/hic_hal/nordic/nrf5340
+            - source/hic_hal/nordic/nrf5340/flash.c
+            - source/hic_hal/nordic/nrf5340/gpio.c
+            - source/hic_hal/nordic/nrf5340/read_uid.c
+            - source/hic_hal/nordic/nrf5340/sdk.c
+            - source/hic_hal/nordic/nrf5340/uart_nrfx.c
+            - source/hic_hal/nordic/nrf5340/usb_config.c
             - source/hic_hal/nordic/nrf5340/cmsis
             - source/hic_hal/nordic/nrfx/drivers
             - source/hic_hal/nordic/shared
