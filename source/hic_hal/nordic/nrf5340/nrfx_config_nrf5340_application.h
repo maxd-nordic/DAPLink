@@ -2051,7 +2051,7 @@
 // <e> NRFX_USBREG_ENABLED - nrfx_usbreg - USBREG peripheral driver
 //==========================================================
 #ifndef NRFX_USBREG_ENABLED
-#define NRFX_USBREG_ENABLED 0
+#define NRFX_USBREG_ENABLED 1
 #endif
 // <o> NRFX_USBREG_DEFAULT_CONFIG_IRQ_PRIORITY  - Interrupt priority
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 - 2021, Nordic Semiconductor ASA
+ * Copyright (c) 2017 - 2022, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -81,6 +81,24 @@ extern "C" {
 #define NRFX_CHECK(module_enabled)  (module_enabled)
 
 /**
+ * @brief Macro for creating unsigned integer with bit position @p x set.
+ *
+ * @param[in] x Bit position to be set.
+ *
+ * @return Unsigned integer with requested bit position set.
+ */
+#define NRFX_BIT(x) (1UL << (x))
+
+/**
+ * @brief Macro for returning bit mask or 0 if @p x is 0.
+ *
+ * @param[in] x Bit mask size. Bit mask has bits 0 through x-1 (inclusive) set.
+ *
+ * @return Bit mask.
+ */
+#define NRFX_BIT_MASK(x) (NRFX_BIT(x) - 1UL)
+
+/**
  * @brief Macro for concatenating two tokens in macro expansion.
  *
  * @note This macro is expanded in two steps so that tokens given as macros
@@ -120,6 +138,35 @@ extern "C" {
 
 /** @brief Internal macro used by @ref NRFX_CONCAT_3 to perform the expansion in two steps. */
 #define NRFX_CONCAT_3_(p1, p2, p3)  p1 ## p2 ## p3
+
+/**
+ * @brief Macro for computing the absolute value of an integer number.
+ *
+ * @param[in] a Input value.
+ *
+ * @return Absolute value.
+ */
+#define NRFX_ABS(a) ((a) < (0) ? -(a) : (a))
+
+/**
+ * @brief Macro for getting the smaller value between two arguments.
+ *
+ * @param[in] a First argument.
+ * @param[in] b Second argument.
+ *
+ * @return Smaller value between two arguments.
+ */
+#define NRFX_MIN(a, b) ((a) < (b) ? (a) : (b))
+
+/**
+ * @brief Macro for getting the larger value between two arguments.
+ *
+ * @param[in] a First argument.
+ * @param[in] b Second argument.
+ *
+ * @return Larger value between two arguments.
+ */
+#define NRFX_MAX(a, b) ((a) > (b) ? (a) : (b))
 
 /**
  * @brief Macro for performing rounded integer division (as opposed to

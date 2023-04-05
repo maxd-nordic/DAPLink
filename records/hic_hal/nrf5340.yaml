@@ -26,9 +26,10 @@ common:
             - source/hic_hal/nordic/nrf5340/sdk.c
             - source/hic_hal/nordic/nrf5340/uart_nrfx.c
             - source/hic_hal/nordic/nrf5340/usb_config.c
+            - source/hic_hal/nordic/nrf5340/usb_nrfx.c
             - source/hic_hal/nordic/nrf5340/cmsis
             - source/hic_hal/nordic/nrfx/drivers
-            - source/hic_hal/nordic/shared
+            #- source/hic_hal/nordic/shared
 
 tool_specific:
     uvision:
