@@ -203,6 +203,7 @@ SUPPORTED_CONFIGURATIONS = [
     (   0x1100,     VENDOR_TO_FAMILY('Nordic', 1),      'sam3u2c_mkit_dk_dongle_nrf5x_if',          'sam3u2c_bl',       'Nordic-nRF51-DK'                       ),
     (   0x1101,     VENDOR_TO_FAMILY('Nordic', 2),      'sam3u2c_mkit_dk_dongle_nrf5x_if',          'sam3u2c_bl',       'Nordic-nRF52-DK'                       ),
     (   0x1102,     VENDOR_TO_FAMILY('Nordic', 2),      'sam3u2c_mkit_dk_dongle_nrf5x_if',          'sam3u2c_bl',       'Nordic-nRF52840-DK'                    ),
+    (   0x1103,     VENDOR_TO_FAMILY('Nordic', 4),      'nrf52840_thingy91_if',                     None,               'Nordic Thingy:91'                      ),
     (   0x1114,     VENDOR_TO_FAMILY('Stub', 1),        'lpc11u35_ssci1114_if',                     None,               'LPC1114FN28'                           ),
     (   0x1120,     VENDOR_TO_FAMILY('Nordic', 1),      'sam3u2c_mkit_dk_dongle_nrf5x_if',          'sam3u2c_bl',       'Nordic-nRF51-Dongle'                   ),
     (   0x1234,     VENDOR_TO_FAMILY('Stub', 1),        'lpc11u35_c027_if',                         None,               'u-blox-C027'                           ),
@@ -249,7 +250,6 @@ SUPPORTED_CONFIGURATIONS = [
     (   0x0000,     VENDOR_TO_FAMILY('Stub', 1),        'nrf52820_if',                              None,               None                                    ),
     (   0x0000,     VENDOR_TO_FAMILY('Stub', 1),        'nrf52840_if',                              None,               None                                    ),
     (   0x0000,     VENDOR_TO_FAMILY('Stub', 1),        'nrf52840dongle_if',                        None,               None                                    ),
-    (   0x0000,     VENDOR_TO_FAMILY('Nordic', 4),      'nrf52840_thingy91_if',                     None,               None                                    ),
     (   0x0000,     VENDOR_TO_FAMILY('Stub', 1),        'sam3u2c_if',                               None,               None                                    ),
     (   0x0000,     VENDOR_TO_FAMILY('Stub', 1),        'stm32f103xb_if',                           None,               None                                    ),
 
