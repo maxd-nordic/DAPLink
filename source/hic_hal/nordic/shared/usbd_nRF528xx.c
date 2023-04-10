@@ -94,11 +94,34 @@ static uint32_t    ep_buf   [2][USBD_EP_NUM_MAX][64/4];
 void usbd_enable (void) {
   uint32_t i;
 
+  __disable_irq(); /* Disable interrupts */
   if (nrf52_errata_187()) {             /* If errata [187] (USBD: USB cannot be enabled) is present */
     *(volatile uint32_t *)0x4006EC00 = 0x00009375;
     *(volatile uint32_t *)0x4006ED14 = 0x00000003;
     *(volatile uint32_t *)0x4006EC00 = 0x00009375;
   }
+
+  if (nrf52_errata_171()) {
+    if (*((volatile uint32_t *)(0x4006EC00)) == 0x00000000)
+    {
+      *((volatile uint32_t *)(0x4006EC00)) = 0x00009375;
+      *((volatile uint32_t *)(0x4006EC14)) = 0x000000C0;
+      *((volatile uint32_t *)(0x4006EC00)) = 0x00009375;
+    }
+    else
+    {
+      *((volatile uint32_t *)(0x4006EC14)) = 0x000000C0;
+    }
+  }
+
+  if (nrf52_errata_166())
+  {
+    *((volatile uint32_t *)((uint32_t)(NRF_USBD) + 0x800)) = 0x7E3;
+    *((volatile uint32_t *)((uint32_t)(NRF_USBD) + 0x804)) = 0x40;
+    __ISB();
+    __DSB();
+  }
+  __enable_irq(); /* Enable interrupts */
 
   /* Enable the peripheral */
   NRF_USBD->ENABLE = USBD_ENABLE_ENABLE_Enabled << USBD_ENABLE_ENABLE_Pos;
@@ -113,11 +136,26 @@ void usbd_enable (void) {
   /* Enable ready event */
   NRF_USBD->EVENTCAUSE &= ~USBD_EVENTCAUSE_READY_Msk;
 
+  __disable_irq(); /* Disable interrupts */
+  if (nrf52_errata_171()) {
+    if (*((volatile uint32_t *)(0x4006EC00)) == 0x00000000)
+    {
+      *((volatile uint32_t *)(0x4006EC00)) = 0x00009375;
+      *((volatile uint32_t *)(0x4006EC14)) = 0x00000000;
+      *((volatile uint32_t *)(0x4006EC00)) = 0x00009375;
+    }
+    else
+    {
+      *((volatile uint32_t *)(0x4006EC14)) = 0x00000000;
+    }
+  }
+
   if (nrf52_errata_187()) {             /* If errata [187] (USBD: USB cannot be enabled) is present */
     *(volatile uint32_t *)0x4006EC00 = 0x00009375;
     *(volatile uint32_t *)0x4006ED14 = 0x00000000;
     *(volatile uint32_t *)0x4006EC00 = 0x00009375;
   }
+  __enable_irq(); /* Enable interrupts */
 }
 
 /* Disable USB Device */
@@ -147,6 +185,11 @@ void usbd_dma (uint32_t EPNum, uint32_t *buf, uint32_t cnt) {
   os_mut_wait(&usbd_hw_mutex, 0xFFFFU);
 #endif
 
+  if (nrf52_errata_199())
+  {
+    *((volatile uint32_t *)0x40027C1C) = 0x00000082;
+  }
+
   if (ep_dir != 0U) {                   /* If IN endpoint */
       NRF_USBD->EPIN[ep_num].PTR        = (uint32_t)buf;
       NRF_USBD->EPIN[ep_num].MAXCNT     = len;
@@ -159,6 +202,11 @@ void usbd_dma (uint32_t EPNum, uint32_t *buf, uint32_t cnt) {
       NRF_USBD->TASKS_STARTEPOUT[ep_num]= USBD_TASKS_STARTEPOUT_TASKS_STARTEPOUT_Trigger;
       while (NRF_USBD->EVENTS_ENDEPOUT[ep_num] == 0U);
       NRF_USBD->EVENTS_ENDEPOUT[ep_num] = 0U;
+  }
+
+  if (nrf52_errata_199())
+  {
+    *((volatile uint32_t *)0x40027C1C) = 0x00000000;
   }
 
 #ifdef __RTX
@@ -276,9 +324,24 @@ void USBD_Resume (void) {
  */
 
 void USBD_WakeUp (void) {
+  __disable_irq(); /* Disable interrupts */
   NRF_USBD->LOWPOWER        = USBD_LOWPOWER_LOWPOWER_ForceNormal;
   NRF_USBD->DPDMVALUE       = USBD_DPDMVALUE_STATE_Resume;
   NRF_USBD->TASKS_DPDMDRIVE = USBD_TASKS_DPDMDRIVE_TASKS_DPDMDRIVE_Trigger;
+  if (nrf52_errata_171())
+  {
+    if (*((volatile uint32_t *)(0x4006EC00)) == 0x00000000)
+    {
+      *((volatile uint32_t *)(0x4006EC00)) = 0x00009375;
+      *((volatile uint32_t *)(0x4006EC14)) = 0x000000C0;
+      *((volatile uint32_t *)(0x4006EC00)) = 0x00009375;
+    }
+    else
+    {
+      *((volatile uint32_t *)(0x4006EC14)) = 0x000000C0;
+    }
+  }
+  __enable_irq(); /* Enable interrupts */
 }
 
 
